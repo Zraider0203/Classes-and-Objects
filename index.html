@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Port Simulation</title>
+    <style>
+        /* Style the body */
+        body{
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            background-color: rgb(0, 0, 0);
+            margin: 0;
+            padding: 20px;
+            color: rgb(255, 255, 255);
+        }
+        #game-container{
+            max-width: 700px;
+            margin: auto;
+            padding: 20px;
+            background-color: burlywood;
+            border: 1px solid seagreen;
+            border-radius: 8px;
+        }
+        .ship{
+            border: 1px solid darkblue;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        button{
+            padding: 5px 10px;
+            margin-top: 10px;
+        }
+        /* style the back color of the class top-information to dark green */
+        .top-information{
+            background-color: darkgreen;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <h1>Port Manager</h1>
+        <div id="directions">
+            <p>Welcome to the Port Manager! Your job is to make sure that no ship leaves this port or enters this port with intent on not paying.</p>
+            <p>Each time you click on the name of a ship that has been serviced, coins will be deposited into the Port account</p>
+        </div>
+        <div id="coins">
+            <h2>Gold Coins: <span id="coins-amount">0</span></h2>
+        </div>
+        <div id="ships-container">
+            <!-- We are going to use Javascript to add ships here, this can be done by using the id ships-container -->
+        </div>
+    </div>
+    <script>
+        // Create our class for a ship
+        class Ship{
+            constructor(name, serviceCost){
+                this.name = name;
+                this.serviceCost = serviceCost;
+            }
+            // This is a method, it is a function that is part of the class
+            service(){
+                game.coins = game.coins + this.serviceCost;
+                game.updateCoinsDisplay();
+            }
+        }
+        // Create our game class
+        class Game{
+            constructor(){
+                this.coins = 0;
+                this.ships=[];
+            }
+            // Create a method to update the coins on the page
+            updateCoinsDisplay(){
+                document.getElementById("coins-amount").innerText = this.coins
+            }
+            // Create a method to add a ship t the page
+            addShip(ship){
+                this.ships.push(ship);
+                this.displayShip(ship);
+            }
+            // Create a method o display a ship on the page
+            displayShip(ship){
+                const container = document.getElementById("ships-container");
+                const shipDiv = document.createElement("div");
+                shipDiv.classList.add("ship");
+                shipDiv.innerHTML = "<h2>" + ship.name + "</h2><p>Service Cost: " + ship.serviceCost + " coins";
+                shipDiv.onclick = function(){
+                    ship.service();
+                }  
+                container.appendChild(shipDiv);
+             }
+            
+        }
+            // create a new game object instance from our class
+            const game = new Game();
+
+            // Create a new ship object from our cless.
+            const ships = [
+                 new Ship("Black Pearl", 100),
+                new Ship("Jolly Roger", 100),
+                 new Ship("USS Texas", 200),
+                 new Ship("USS Misouri", 200),
+                 new Ship("Adventure Galley", 100)
+            ];
+
+            // Add each ship to the game
+            ships.forEach(ship => game.addShip(ship));
+        </script>
+    </body>
+</html>
